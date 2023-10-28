@@ -41,8 +41,8 @@ class Writer(writers.Writer):
                         '\\usepackage[scaled=.90]{helvet}\n'
                         '\\usepackage{courier}')
     table_style_values = [  # TODO: align-left, align-center, align-right, ??
-                          'booktabs', 'borderless', 'colwidths-auto',
-                          'nolines', 'standard']
+        'booktabs', 'borderless', 'colwidths-auto',
+        'nolines', 'standard']
 
     settings_spec = (
         'LaTeX-Specific Options',
@@ -237,7 +237,7 @@ class Writer(writers.Writer):
            'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ),
-        )
+    )
 
     settings_defaults = {'sectnum_depth': 0}  # updated by SectNum transform
     config_section = 'latex2e writer'
@@ -259,10 +259,10 @@ class Writer(writers.Writer):
     def get_transforms(self):
         # Override parent method to add latex-specific transforms
         return super().get_transforms() + [
-                   # Convert specific admonitions to generic one
-                   writer_aux.Admonitions,
-                   # TODO: footnote collection transform
-                   ]
+            # Convert specific admonitions to generic one
+            writer_aux.Admonitions,
+            # TODO: footnote collection transform
+        ]
 
     def translate(self):
         visitor = self.translator_class(self.document)
@@ -382,7 +382,7 @@ class Babel:
         'uk':           'ukrainian',
         'vi':           'vietnam',
         # zh-Latn:      Chinese Pinyin
-        }
+    }
     # normalize (downcase) keys
     language_codes = {k.lower(): v for k, v in language_codes.items()}
 
@@ -402,16 +402,16 @@ class Babel:
     #    slovene, spanish, swedish, ukrainian, and uppersorbian --
     #    is escaped as ``\textquotedbl``.
     active_chars = {
-                    # TeX/Babel-name:  active characters to deactivate
-                    # 'breton':        ':;!?'  # ensure whitespace
-                    # 'esperanto':     '^',
-                    # 'estonian':      '~"`',
-                    # 'french':        ':;!?'  # ensure whitespace
-                    'galician':        '.<>',  # also '~"'
-                    # 'magyar':        '`',  # for special hyphenation cases
-                    'spanish':         '.<>',  # old versions also '~'
-                    # 'turkish':       ':!='  # ensure whitespace
-                   }
+        # TeX/Babel-name:  active characters to deactivate
+        # 'breton':        ':;!?'  # ensure whitespace
+        # 'esperanto':     '^',
+        # 'estonian':      '~"`',
+        # 'french':        ':;!?'  # ensure whitespace
+        'galician':        '.<>',  # also '~"'
+        # 'magyar':        '`',  # for special hyphenation cases
+        'spanish':         '.<>',  # old versions also '~'
+        # 'turkish':       ':!='  # ensure whitespace
+    }
 
     def __init__(self, language_code, reporter=None):
         self.reporter = reporter
@@ -443,7 +443,7 @@ class Babel:
                                r'  \addto\extrasbasque{\bbl@deactivate{~}}',
                                r'\makeatother'])
         if (languages[-1] == 'english'
-            and 'french' in self.otherlanguages.keys()):
+                and 'french' in self.otherlanguages.keys()):
             self.setup += ['% Prevent side-effects if French hyphenation '
                            'patterns are not loaded:',
                            r'\frenchbsetup{StandardLayout}',
@@ -476,6 +476,7 @@ class SortableDict(dict):
     Tip: use key starting with with '_' for sorting before small letters
          and with '~' for sorting after small letters.
     """
+
     def sortedkeys(self):
         """Return sorted list of keys"""
         return sorted(self.keys())
@@ -576,9 +577,9 @@ PreambleCmds.ttem = r"""
 \newlength{\ttemwidth}
 \settowidth{\ttemwidth}{\ttfamily M}"""
 
-## PreambleCmds.caption = r"""% configure caption layout
-## \usepackage{caption}
-## \captionsetup{singlelinecheck=false}% no exceptions for one-liners"""
+# PreambleCmds.caption = r"""% configure caption layout
+# \usepackage{caption}
+# \captionsetup{singlelinecheck=false}% no exceptions for one-liners"""
 
 
 # Definitions from docutils.sty::
@@ -840,6 +841,7 @@ class Table:
 
     :colwidths-auto:  column widths determined by LaTeX
     """
+
     def __init__(self, translator, latex_type):
         self._translator = translator
         self._latex_type = latex_type
@@ -933,7 +935,7 @@ class Table:
         #     closing.append(r'\hline')
         closing.append(r'\end{%s}' % self.get_latex_type())
         if (self.get('align')
-            and self.get_latex_type() not in ("longtable", "longtable*")):
+                and self.get_latex_type() not in ("longtable", "longtable*")):
             closing.append('}')
         return '\n'.join(closing)
 
@@ -991,8 +993,8 @@ class Table:
         """Return columnwidth for current cell (not multicell)."""
         try:
             if self.legacy_column_widths:
-                return '%.2f\\DUtablewidth'%self._colwidths[self._cell_in_row]
-            return '\\DUcolumnwidth{%.2f}'%self._colwidths[self._cell_in_row]
+                return '%.2f\\DUtablewidth' % self._colwidths[self._cell_in_row]
+            return '\\DUcolumnwidth{%.2f}' % self._colwidths[self._cell_in_row]
         except IndexError:
             return '*'
 
@@ -1035,8 +1037,8 @@ class Table:
 
     def depart_thead(self):
         a = []
-        ## if self.borders == 'standard':
-        ##     a.append('\\hline\n')
+        # if self.borders == 'standard':
+        # a.append('\\hline\n')
         if self.borders == 'booktabs':
             a.append('\\midrule\n')
         if self._latex_type == 'longtable':
@@ -1130,7 +1132,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     # TODO: use mixins for different implementations.
     # list environment for docinfo. else tabularx
-    ## use_optionlist_for_docinfo = False # TODO: NOT YET IN USE
+    # use_optionlist_for_docinfo = False # TODO: NOT YET IN USE
 
     # Use compound enumerations (1.A.1.)
     compound_enumerators = False
@@ -1247,13 +1249,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.title = []
         self.subtitle = []
         self.titledata = []  # \title, \author, \date
-        ## self.body_prefix = ['\\begin{document}\n']
+        # self.body_prefix = ['\\begin{document}\n']
         self.body_pre_docinfo = []  # \maketitle
         self.docinfo = []
         self.dedication = []
         self.abstract = []
         self.body = []
-        ## self.body_suffix = ['\\end{document}\n']
+        # self.body_suffix = ['\\end{document}\n']
 
         self.context = []
         """Heterogeneous stack.
@@ -1273,7 +1275,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.pdfauthor = []
         self.pdfinfo = []
         if settings.language_code != 'en':
-            self.pdfinfo.append('  pdflang={%s},'%settings.language_code)
+            self.pdfinfo.append('  pdflang={%s},' % settings.language_code)
 
         # Stack of section counters so that we don't have to use_latex_toc.
         # This will grow and shrink as processing occurs.
@@ -1379,13 +1381,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     % self.d_class.latex_section_depth(secnumdepth))
             # start with specified number:
             if (hasattr(settings, 'sectnum_start')
-                and settings.sectnum_start != 1):
+                    and settings.sectnum_start != 1):
                 self.requirements['sectnum_start'] = (
                     r'\setcounter{%s}{%d}' % (self.d_class.sections[0],
                                               settings.sectnum_start-1))
             # TODO: currently ignored (configure in a stylesheet):
-            ## settings.sectnum_prefix
-            ## settings.sectnum_suffix
+            # settings.sectnum_prefix
+            # settings.sectnum_suffix
 
     # Auxiliary Methods
     # -----------------
@@ -1559,11 +1561,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         return self.encode(whitespace.sub(' ', text))
 
     # TODO: is this used anywhere? -> update (use template) or delete
-    ## def astext(self):
-    ##     """Assemble document parts and return as string."""
-    ##     head = '\n'.join(self.head_prefix + self.stylesheet + self.head)
-    ##     body = ''.join(self.body_prefix  + self.body + self.body_suffix)
-    ##     return head + '\n' + body
+    # def astext(self):
+    # """Assemble document parts and return as string."""
+    # head = '\n'.join(self.head_prefix + self.stylesheet + self.head)
+    # body = ''.join(self.body_prefix  + self.body + self.body_suffix)
+    # return head + '\n' + body
 
     def is_inline(self, node):
         """Check whether a node represents an inline or block-level element"""
@@ -1710,7 +1712,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.fallbacks['admonition'] = PreambleCmds.admonition_legacy
             if 'error' in node['classes']:
                 self.fallbacks['error'] = PreambleCmds.error_legacy
-            self.out.append('\n\\DUadmonition[%s]{'%','.join(node['classes']))
+            self.out.append(
+                '\n\\DUadmonition[%s]{' % ','.join(node['classes']))
             return
         if not self.fallback_stylesheet:
             self.fallbacks['admonition'] = PreambleCmds.admonition
@@ -1815,7 +1818,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.inside_citation_reference_label = True
             else:
                 assert self.out[-1] in (' ', '\n'),\
-                        'unexpected non-whitespace while in reference label'
+                    'unexpected non-whitespace while in reference label'
                 del self.out[-1]
         else:
             href = ''
@@ -1832,7 +1835,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # check for a following citation separated by a space or newline
             sibling = node.next_node(descend=False, siblings=True)
             if (isinstance(sibling, nodes.Text)
-                and sibling.astext() in (' ', '\n')):
+                    and sibling.astext() in (' ', '\n')):
                 sibling2 = sibling.next_node(descend=False, siblings=True)
                 if isinstance(sibling2, nodes.citation_reference):
                     followup_citation = True
@@ -1992,7 +1995,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_document(self, node):
         # titled document?
         if (self.use_latex_docinfo or len(node)
-            and isinstance(node[0], nodes.title)):
+                and isinstance(node[0], nodes.title)):
             protect = (self.settings.documentclass == 'memoir')
             self.title_labels += self.ids_to_labels(node, set_anchor=False,
                                                     protect=protect)
@@ -2001,7 +2004,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Complete "parts" with information gained from walkabout
         # * language setup
         if (self.babel.otherlanguages
-            or self.babel.language not in ('', 'english')):
+                or self.babel.language not in ('', 'english')):
             self.requirements['babel'] = self.babel()
         # * conditional requirements (before style sheet)
         self.requirements = self.requirements.sortedvalues()
@@ -2014,6 +2017,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.pdfinfo.append('  pdfauthor={%s}' % authors)
         if self.pdfinfo:
             self.pdfsetup += [r'\hypersetup{'] + self.pdfinfo + ['}']
+        # turn off title for now
         # * title (including author(s) and date if using "latex_docinfo")
         if self.title or (self.use_latex_docinfo
                           and (self.author_stack or self.date)):
@@ -2041,18 +2045,41 @@ class LaTeXTranslator(nodes.NodeVisitor):
             title_arg += [r'\\',
                           r'\DUdocumentsubtitle{%s}' % ''.join(self.subtitle),
                           ] + self.subtitle_labels
-        self.titledata.append(r'\title{%s}' % '%\n  '.join(title_arg))
+
+        # self.titledata.append(r'\title{%s}' % '%\n  '.join(title_arg))
         # \author
-        author_arg = ['\\\\\n'.join(author_entry)
-                      for author_entry in self.author_stack]
-        self.titledata.append(r'\author{%s}' %
-                              ' \\and\n'.join(author_arg))
+        # author_arg = ['\\\\\n'.join(author_entry)
+        #               for author_entry in self.author_stack]
+        # self.titledata.append(r'\author{%s}' %
+        #                       ' \\and\n'.join(author_arg))
         # \date
-        self.titledata.append(r'\date{%s}' % ', '.join(self.date))
+        # self.titledata.append(r'\date{%s}' % ', '.join(self.date))
         # \maketitle
         # Must be in the document body. We add it to `body_pre_docinfo`
         # to allow templates to put `titledata` into the document preamble.
-        self.body_pre_docinfo.append('\\maketitle\n')
+        # remove maketitle since with LegrandOrangeBook fails to compile
+        # self.body_pre_docinfo.append('\\maketitle\n')
+        self.body_pre_docinfo.append("""
+        \\titlepage % Output the title page
+	{\\includegraphics[width=\\paperwidth]{background.pdf}} % Code to output the background image, which should be the same dimensions as the paper to fill the page entirely; leave empty for no background image
+	{ % Title(s) and author(s)
+		\\centering\\sffamily % Font styling
+		{\\Huge\\bfseries Exploring the Physical Manifestation of Humanity's Subconscious Desires\\par} % Book title
+		\\vspace{16pt} % Vertical whitespace
+		{\\LARGE A Practical Guide\\par} % Subtitle
+		\\vspace{24pt} % Vertical whitespace
+		{\\huge\\bfseries Goro Akechi\\par} % Author name
+	}
+        \\thispagestyle{empty} % Suppress headers and footers on this page
+
+~\\vfill % Push the text down to the bottom of the page
+
+\\pagestyle{empty} % Disable headers and footers for the following pages
+
+
+\\pagestyle{fancy} % Enable default headers and footers again
+
+        """)
 
     def append_bibliogaphy(self):
         # Add bibliography at end of document.
@@ -2088,7 +2115,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # if the current cell is a multi-row continuation."""
     def insert_additional_table_colum_delimiters(self):
         while self.active_table.get_rowspan(
-                                self.active_table.get_entry_number()):
+                self.active_table.get_entry_number()):
             self.out.append(' & ')
             self.active_table.visit_entry()  # increment cell count
 
@@ -2112,7 +2139,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.requirements['multirow'] = r'\usepackage{multirow}'
             mrows = node['morerows'] + 1
             self.active_table.set_rowspan(
-                            self.active_table.get_entry_number(), mrows)
+                self.active_table.get_entry_number(), mrows)
             self.out.append('\\multirow{%d}{%s}{' %
                             (mrows, self.active_table.get_column_width()))
             self.context.append('}')
@@ -2145,7 +2172,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # if line ends with '{', mask line break
         if (not self.active_table.colwidths_auto
             and self.out[-1].endswith("{")
-            and node.astext()):
+                and node.astext()):
             self.out.append("%")
 
         self.active_table.visit_entry()  # increment cell count
@@ -2172,16 +2199,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
                  'upperroman': 'Roman'}
         # default LaTeX enumeration labels:
         default_labels = [
-                          # (präfix, enumtype, suffix)
-                          ('',  'arabic', '.'),  # 1.
-                          ('(', 'alph',   ')'),  # (a)
-                          ('',  'roman',  '.'),  # i.
-                          ('',  'Alph',   '.')]  # A.
+            # (präfix, enumtype, suffix)
+            ('',  'arabic', '.'),  # 1.
+            ('(', 'alph',   ')'),  # (a)
+            ('',  'roman',  '.'),  # i.
+            ('',  'Alph',   '.')]  # A.
 
         prefix = ''
         if self.compound_enumerators:
             if (self.section_prefix_for_enumerators and self.section_level
-                and not self._enumeration_counters):
+                    and not self._enumeration_counters):
                 prefix = '.'.join(str(n) for n in
                                   self._section_number[:self.section_level]
                                   ) + self.section_enumerator_separator
@@ -2426,7 +2453,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             'center': (r'\noindent\makebox[\linewidth][c]{', '}'),
             'left':   (r'\noindent{', r'\hfill}'),
             'right':  (r'\noindent{\hfill', '}'),
-            }
+        }
         if 'align' in attrs:
             # TODO: warn or ignore non-applicable alignment settings?
             try:
@@ -2517,7 +2544,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_literal(self, node):
         self.literal = True
         if ('code' in node['classes']
-            and self.settings.syntax_highlight != 'none'):
+                and self.settings.syntax_highlight != 'none'):
             self.requirements['color'] = PreambleCmds.color
             if not self.fallback_stylesheet:
                 self.fallbacks['code'] = PreambleCmds.highlight_rules
@@ -2579,7 +2606,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Highlight code?
         if (not _plaintext
             and 'code' in node['classes']
-            and self.settings.syntax_highlight != 'none'):
+                and self.settings.syntax_highlight != 'none'):
             self.requirements['color'] = PreambleCmds.color
             if not self.fallback_stylesheet:
                 self.fallbacks['code'] = PreambleCmds.highlight_rules
@@ -2645,13 +2672,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
             return
         if name in ('author', 'creator', 'keywords', 'subject', 'title'):
             # fields with dedicated hyperref options:
-            self.pdfinfo.append('  pdf%s={%s},'%(name, content))
+            self.pdfinfo.append('  pdf%s={%s},' % (name, content))
         elif name == 'producer':
-            self.pdfinfo.append('  addtopdfproducer={%s},'%content)
+            self.pdfinfo.append('  addtopdfproducer={%s},' % content)
         else:
             # generic interface (case sensitive!)
             # TODO: filter irrelevant nodes ("http-equiv", ...)?
-            self.pdfinfo.append('  pdfinfo={%s={%s}},'%(name, content))
+            self.pdfinfo.append('  pdfinfo={%s={%s}},' % (name, content))
 
     def depart_meta(self, node):
         pass
@@ -2731,11 +2758,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_option_string(self, node):
-        ## self.out.append(self.starttag(node, 'span', '', CLASS='option'))
+        # self.out.append(self.starttag(node, 'span', '', CLASS='option'))
         pass
 
     def depart_option_string(self, node):
-        ## self.out.append('</span>')
+        # self.out.append('</span>')
         pass
 
     def visit_organization(self, node):
@@ -2995,7 +3022,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             and isinstance(node.parent, nodes.section)
             and node.parent.index(node) == 1
             and self.d_class.section(
-                   self.section_level).find('paragraph') != -1):
+                self.section_level).find('paragraph') != -1):
             self.out.append('\\leavevmode')
         self.active_table.open()
         self.active_table.set_table_style(node, self.settings)
@@ -3035,8 +3062,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Skip indirect targets:
         if ('refuri' in node        # external hyperlink
             or 'refid' in node      # resolved internal link
-            or 'refname' in node):  # unresolved internal link
-            ## self.out.append('%% %s\n' % node)   # for debugging
+                or 'refname' in node):  # unresolved internal link
+            # self.out.append('%% %s\n' % node)   # for debugging
             return
         self.out.append('%\n')
         # do we need an anchor (\phantomsection)?
@@ -3160,14 +3187,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # label and ToC entry:
             bookmark = ['']
             # add sections with unsupported level to toc and pdfbookmarks?
-            ## if level > len(self.d_class.sections):
-            ##     section_title = self.encode(node.astext())
-            ##     bookmark.append(r'\addcontentsline{toc}{%s}{%s}' %
-            ##               (section_name, section_title))
+            # if level > len(self.d_class.sections):
+            # section_title = self.encode(node.astext())
+            # bookmark.append(r'\addcontentsline{toc}{%s}{%s}' %
+            # (section_name, section_title))
             bookmark += self.ids_to_labels(node.parent, set_anchor=False)
             self.context.append('%\n  '.join(bookmark) + '%\n}\n')
             if (level > len(self.d_class.sections)
-                and not self.settings.legacy_class_functions):
+                    and not self.settings.legacy_class_functions):
                 self.context[-1] += '\\end{DUclass}\n'
             # MAYBE postfix paragraph and subparagraph with \leavevmode to
             # ensure floats stay in the section and text starts on a new line.
@@ -3205,7 +3232,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out += self.ids_to_labels(node, newline=True)
         if (isinstance(node.next_node(), nodes.title)
             and 'local' not in node['classes']
-            and self.settings.documentclass != 'memoir'):
+                and self.settings.documentclass != 'memoir'):
             self.out.append('\\pdfbookmark[%d]{%s}{%s}\n' %
                             (self.section_level+1,
                              node.next_node().astext(),
@@ -3227,7 +3254,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if 'local' in node['classes']:
             # use the "minitoc" package
             self.requirements['minitoc'] = PreambleCmds.minitoc
-            self.requirements['minitoc-'+mtc_name] = r'\do%stoc'%mtc_name
+            self.requirements['minitoc-'+mtc_name] = r'\do%stoc' % mtc_name
             self.requirements['minitoc-%s-depth' % mtc_name] = (
                 r'\mtcsetdepth{%stoc}{%d}' % (mtc_name, maxdepth))
             # "depth" option: Docutils stores a relative depth while
@@ -3282,14 +3309,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_topic(self, node):
         if ('abstract' in node['classes']
-            and self.settings.use_latex_abstract):
+                and self.settings.use_latex_abstract):
             self.out.append('\\end{abstract}\n')
         elif 'contents' in node['classes']:
             self.duclass_close(node)
         else:
             self.depart_block_quote(node)
         if ('abstract' in node['classes']
-            or 'dedication' in node['classes']):
+                or 'dedication' in node['classes']):
             self.pop_output_collector()
 
     def visit_transition(self, node):
